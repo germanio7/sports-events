@@ -1,0 +1,42 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: eventos-app
+    restart: unless-stopped
+    volumes:
+      - .:/var/www
+      - sqlite-data:/var/www/database
+    networks:
+      - app-network
+    env_file:
+      - .env
+    command: sh -c "
+      mkdir -p /var/www/database &&
+      touch /var/www/database/database.sqlite &&
+      chown -R www-data:www-data /var/www/database /var/www/storage /var/www/bootstrap/cache &&
+      chmod -R 775 /var/www/database /var/www/storage /var/www/bootstrap/cache &&
+      php artisan migrate --force &&
+      php-fpm"
+
+  web:
+    image: nginx
+    container_name: eventos-web
+    restart: unless-stopped
+    volumes:
+      - ./docker/nginx/conf.d/eventos.germanio.ar.conf:/etc/nginx/conf.d/default.conf
+      - .:/var/www
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+    depends_on:
+      - app
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  sqlite-data:

@@ -1,0 +1,478 @@
+@import 'tailwindcss';
+
+@plugin 'tailwindcss-animate';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../vendor/laravel/framework/src/Illuminate/Foundation/Providers/../resources/views/**/*.blade.php';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+    --font-sans:
+        'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-mono: 'SF Mono', 'JetBrains Mono', 'Cascadia Code', 'Fira Code', 'IBM Plex Mono', Consolas, 'Liberation Mono', monospace;
+
+    --radius-lg: var(--radius);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-sm: calc(var(--radius) - 4px);
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+
+    --color-sidebar: var(--sidebar-background);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+
+    --color-green: var(--green);
+    --color-amber: var(--amber);
+    --color-cyan: var(--cyan);
+    --color-red: var(--red);
+}
+
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}
+
+/* === cliamp inspired palette === */
+:root {
+    /* forcing single dark world — CLIAMP is dark by nature */
+    color-scheme: dark;
+
+    --ink: #080a08;
+    --ink-2: #0b0d0a;
+    --panel: #111410;
+    --panel-2: #171b14;
+    --panel-3: #1e231a;
+    --bevel-hi: rgba(190, 255, 210, 0.05);
+    --bevel-lo: rgba(0, 0, 0, 0.55);
+    --line: #262c20;
+    --line-hi: #39422f;
+
+    --fg: #c3c7ba;
+    --fg-hi: #e9ece0;
+    --fg-max: #fbfdf5;
+    --mute: #6e7566;
+    --mute-2: #474d40;
+
+    --green: #37f5a0;
+    --green-hi: #8bffc6;
+    --green-glow: rgba(55, 245, 160, 0.35);
+    --green-dim: rgba(55, 245, 160, 0.1);
+
+    --amber: #ffb454;
+    --amber-hi: #ffd39a;
+    --amber-glow: rgba(255, 180, 84, 0.32);
+    --amber-dim: rgba(255, 180, 84, 0.1);
+
+    --cyan: #4fd6ff;
+    --red: #ff5d6c;
+
+    --background: var(--ink);
+    --foreground: var(--fg);
+    --card: var(--panel);
+    --card-foreground: var(--fg);
+    --popover: var(--panel-2);
+    --popover-foreground: var(--fg);
+    --primary: var(--green);
+    --primary-foreground: var(--ink);
+    --secondary: var(--panel-2);
+    --secondary-foreground: var(--fg-hi);
+    --muted: var(--panel-2);
+    --muted-foreground: var(--mute);
+    --accent: var(--panel-2);
+    --accent-foreground: var(--green);
+    --destructive: var(--red);
+    --destructive-foreground: var(--fg-max);
+    --border: var(--line);
+    --input: var(--line);
+    --ring: var(--green);
+    --radius: 0.4rem;
+
+    --sidebar-background: var(--ink-2);
+    --sidebar-foreground: var(--fg);
+    --sidebar-primary: var(--green);
+    --sidebar-primary-foreground: var(--ink);
+    --sidebar-accent: var(--panel-2);
+    --sidebar-accent-foreground: var(--green);
+    --sidebar-border: var(--line);
+    --sidebar-ring: var(--green);
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    html,
+    body {
+        @apply bg-background text-foreground;
+        font-family: var(--font-mono);
+        font-size: 14px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        background-image:
+            radial-gradient(120% 80% at 12% -5%, rgba(55, 245, 160, 0.05), transparent 55%),
+            radial-gradient(120% 90% at 88% 110%, rgba(255, 180, 84, 0.045), transparent 55%),
+            radial-gradient(140% 120% at 50% 40%, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+        background-attachment: fixed;
+    }
+
+    ::selection {
+        background: var(--green);
+        color: var(--ink);
+    }
+
+    a {
+        color: var(--cyan);
+    }
+
+    a:hover {
+        color: var(--amber-hi);
+    }
+}
+
+/* === CRT atmosphere === */
+.crt-scan {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 60;
+    background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0) 0 2px, rgba(0, 0, 0, 0.14) 2px 3px);
+    mix-blend-mode: multiply;
+    animation: crt-scan 8s linear infinite;
+}
+@keyframes crt-scan {
+    to {
+        background-position: 0 300px;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .crt-scan {
+        animation: none;
+    }
+}
+
+.crt-grain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 59;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.chassis {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 58;
+    box-shadow:
+        inset 0 0 0 1px rgba(120, 140, 110, 0.1),
+        inset 0 0 90px rgba(0, 0, 0, 0.7);
+}
+
+/* === shared terminal primitives === */
+.tty-frame {
+    position: relative;
+    border-radius: 14px;
+    padding: 14px;
+    background: linear-gradient(155deg, #20261b, #0c0f0a);
+    box-shadow:
+        inset 0 1px 0 var(--bevel-hi),
+        0 30px 70px rgba(0, 0, 0, 0.55),
+        0 0 0 1px rgba(0, 0, 0, 0.5);
+}
+
+.tty-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 2px 8px 12px;
+    font-size: 11px;
+}
+
+.tty-prompt {
+    color: var(--green);
+    font-weight: 800;
+}
+
+.tty-cmd {
+    color: var(--fg-hi);
+    font-weight: 700;
+}
+
+.tty-flag {
+    color: var(--mute);
+}
+
+.tty-pid {
+    color: var(--mute-2);
+    letter-spacing: 1px;
+    margin-left: auto;
+}
+
+.tty-body {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 16px 18px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--fg);
+    border: 1px solid #000;
+    background: radial-gradient(120% 120% at 50% 0%, rgba(55, 245, 160, 0.05), transparent 55%), #060806;
+}
+.tty-body::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    background: repeating-linear-gradient(0deg, transparent 0 2px, rgba(0, 0, 0, 0.16) 2px 3px);
+}
+.tty-body > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* led dot in nav/brand */
+.led {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow:
+        0 0 10px var(--green-glow),
+        0 0 2px #fff inset;
+    animation: blink 2.4s ease-in-out infinite;
+}
+@keyframes blink {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.35;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .led {
+        animation: none;
+    }
+}
+
+/* section header strip (idx + name + rule + meter) */
+.strip {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+.strip-idx {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--amber);
+    padding: 5px 9px;
+    border: 1px solid var(--line-hi);
+    border-radius: 3px;
+    background: linear-gradient(to bottom, var(--panel-2), var(--panel));
+    box-shadow:
+        0 1px 0 var(--bevel-hi),
+        inset 0 0 8px rgba(0, 0, 0, 0.4);
+    text-shadow: 0 0 10px var(--amber-glow);
+}
+.strip-name {
+    font-size: clamp(22px, 3.4vw, 30px);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--fg-hi);
+    text-shadow:
+        0 1px 0 var(--bevel-hi),
+        0 -1px 1px var(--bevel-lo);
+}
+.strip-name em {
+    font-style: normal;
+    color: var(--green);
+    text-shadow: 0 0 16px var(--green-glow);
+}
+.strip-rule {
+    flex: 1;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(to right, var(--line-hi), var(--line) 55%, transparent);
+    box-shadow: 0 1px 0 var(--bevel-hi);
+}
+.strip-meter {
+    display: flex;
+    gap: 2px;
+    align-items: flex-end;
+    height: 20px;
+}
+.strip-meter i {
+    width: 3px;
+    background: var(--green);
+    opacity: 0.8;
+    border-radius: 1px;
+    box-shadow: 0 0 6px var(--green-glow);
+    animation: vu 1.1s ease-in-out infinite;
+}
+.strip-meter i:nth-child(2) {
+    animation-delay: 0.15s;
+}
+.strip-meter i:nth-child(3) {
+    animation-delay: 0.3s;
+    background: var(--amber);
+    box-shadow: 0 0 6px var(--amber-glow);
+}
+.strip-meter i:nth-child(4) {
+    animation-delay: 0.45s;
+    background: var(--amber);
+    box-shadow: 0 0 6px var(--amber-glow);
+}
+.strip-meter i:nth-child(5) {
+    animation-delay: 0.6s;
+    background: var(--red);
+    box-shadow: 0 0 6px rgba(255, 93, 108, 0.4);
+}
+@keyframes vu {
+    0%,
+    100% {
+        height: 5px;
+    }
+    50% {
+        height: 20px;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .strip-meter i {
+        animation: none;
+        height: 12px;
+    }
+}
+
+/* terminal panel card */
+.panel {
+    background: linear-gradient(to bottom, var(--panel-2), var(--panel));
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow:
+        0 1px 0 var(--bevel-hi),
+        0 -1px 1px var(--bevel-lo);
+    transition:
+        transform 0.15s,
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+.panel:hover {
+    border-color: var(--line-hi);
+    box-shadow:
+        0 0 18px rgba(0, 0, 0, 0.45),
+        0 1px 0 var(--bevel-hi),
+        0 -1px 1px var(--bevel-lo);
+}
+
+/* key/value rows in cards */
+.kv {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 12.5px;
+}
+.kv .k {
+    color: var(--mute);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+.kv .v {
+    color: var(--fg-hi);
+}
+
+/* buttons go/ghost */
+.btn-go {
+    color: var(--ink);
+    border: 1px solid var(--green);
+    background: linear-gradient(to bottom, var(--green-hi), var(--green));
+    box-shadow:
+        0 0 20px var(--green-glow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+.btn-go:hover {
+    box-shadow:
+        0 0 34px var(--green-glow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.btn-ghost {
+    color: var(--fg-hi);
+    background: linear-gradient(to bottom, var(--panel-2), var(--panel));
+    border: 1px solid var(--line-hi);
+    box-shadow:
+        0 1px 0 var(--bevel-hi),
+        0 -1px 1px var(--bevel-lo);
+}
+.btn-ghost:hover {
+    color: var(--green);
+    border-color: var(--green);
+    text-shadow: 0 0 10px var(--green-glow);
+}
+
+.kbd {
+    color: var(--ink);
+    background: var(--fg-hi);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 800;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* scrollbar — keep it terminal */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-hi) var(--ink);
+}
