@@ -18,6 +18,8 @@ services:
       chown -R www-data:www-data /var/www/database /var/www/storage /var/www/bootstrap/cache &&
       chmod -R 775 /var/www/database /var/www/storage /var/www/bootstrap/cache &&
       composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist &&
+      npm ci --no-audit --no-fund &&
+      npm run build &&
       php artisan migrate --force &&
       php-fpm"
 
