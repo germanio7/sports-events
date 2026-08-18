@@ -173,13 +173,13 @@ class StreamedApi
                 $value = intdiv($value, 1000);
             }
 
-            return gmdate('c', $value);
+            return date('c', $value);
         }
 
         if (is_string($date)) {
             $ts = strtotime($date);
 
-            return $ts !== false ? gmdate('c', $ts) : null;
+            return $ts !== false ? date('c', $ts) : null;
         }
 
         return null;

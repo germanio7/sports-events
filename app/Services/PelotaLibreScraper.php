@@ -146,7 +146,7 @@ class PelotaLibreScraper
 
         $time = null;
         if (preg_match('/\b(\d{1,2}:\d{2})\b/', $after, $m)) {
-            $time = $m[1];
+            $time = date('H:i', strtotime("{$m[1]} -4 hours"));
             $after = trim(preg_replace('/\b\d{1,2}:\d{2}\b/', '', $after, 1));
         }
 
