@@ -16,9 +16,9 @@ class TrackVisits
         $response = $next($request);
 
         if ($request->method() === 'GET') {
-            Visit::query()->updateOrCreate(
+            Visit::query()->firstOrCreate(
                 ['ip' => $request->ip(), 'date' => now()->toDateString()],
-            )->increment('count');
+            );
         }
 
         return $response;
