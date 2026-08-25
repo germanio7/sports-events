@@ -15,6 +15,8 @@ Route::get('opcion-2', function () {
     return Inertia::render('pelota');
 })->name('opcion-2');
 
+Route::get('visits', [\App\Http\Controllers\VisitController::class, 'index'])->name('visits');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');

@@ -42,6 +42,10 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'name' => config('app.name'),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
+            'visits' => [
+                'today' => \App\Models\Visit::query()->whereDate('date', today())->sum('count'),
+                'total' => \App\Models\Visit::query()->sum('count'),
+            ],
             'auth' => [
                 'user' => $request->user(),
             ],

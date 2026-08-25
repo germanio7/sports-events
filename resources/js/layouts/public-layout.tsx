@@ -2,7 +2,7 @@ import { Link, usePage } from '@inertiajs/react';
 import { type ReactNode } from 'react';
 
 import CrtOverlay from '@/components/crt-overlay';
-import { type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, type SharedData } from '@/types';
 
 interface PublicLayoutProps {
     children: ReactNode;
@@ -17,7 +17,7 @@ const navItems: { href: string; label: string }[] = [
 ];
 
 export default function PublicLayout({ children, breadcrumbs, title }: PublicLayoutProps) {
-    const { url } = usePage();
+    const { url, props } = usePage<SharedData>();
     void breadcrumbs; // currently unused; kept for parity with the starter layout
 
     return (
@@ -63,6 +63,10 @@ export default function PublicLayout({ children, breadcrumbs, title }: PublicLay
                 <div className="mx-auto flex max-w-[1080px] flex-col items-center gap-3 px-5 text-center text-[11px] tracking-[2px] text-[var(--mute-2)] md:px-10">
                     <div>
                         <span className="text-[var(--green)]">~</span> Eventos Deportivos // solo agregador
+                    </div>
+                    <div>
+                        visitas de hoy <b className="text-[var(--green)]">{props.visits.today}</b> · histórico{' '}
+                        <b className="text-[var(--green)]">{props.visits.total}</b>
                     </div>
                     <div className="text-[var(--mute-2)]">Esta plataforma no aloja ni transmite ningún contenido.</div>
                 </div>

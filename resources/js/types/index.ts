@@ -24,6 +24,7 @@ export interface NavItem {
 export interface SharedData {
     name: string;
     quote: { message: string; author: string };
+    visits: { today: number; total: number };
     auth: Auth;
     [key: string]: unknown;
 }
