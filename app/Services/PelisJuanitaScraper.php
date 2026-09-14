@@ -105,6 +105,7 @@ class PelisJuanitaScraper
             'home' => trim($parts[0]),
             'away' => trim($parts[1]),
             'time' => $time,
+            'date' => preg_match('/^\d{4}-\d{2}-\d{2}/', (string) ($a['date_diary'] ?? ''), $dm) ? $dm[0] : null,
             'channel' => null,
             'quality' => null,
             'options' => $options,
