@@ -36,6 +36,7 @@ class PelotaController extends Controller
     // ponytail: modo default para Jellyfin — un canal por partido con URL proxy
     // estable; la resolución al .m3u8 ocurre al sintonizar (los tokens expiran).
     // ?resolve=1 mantiene el modo directo (una entrada por opción, .m3u8 inline).
+    // ?full=1: una entrada por opción (proxy), para elegir fuente en Jellyfin.
     public function playlist(Request $request): Response
     {
         $events = $this->juanita->getAgenda();
@@ -44,6 +45,7 @@ class PelotaController extends Controller
             return $this->directPlaylist($events);
         }
 
+        $full = $request->boolean('full');
         $lines = ['#EXTM3U'];
         foreach ($events as $event) {
             if (($event['options'] ?? []) === []) {
@@ -51,11 +53,20 @@ class PelotaController extends Controller
             }
             $league = $this->m3uField($event['league'] ?? 'Otros');
             $id = Str::slug("{$event['home']} vs {$event['away']}");
-            $title = $this->m3uField("{$event['home']} vs {$event['away']} ({$event['time']})");
-            $lines[] = "#EXTINF:-1 tvg-id=\"{$id}\" group-title=\"{$league}\",{$title}";
-            // ponytail: url() con array agrega path, no query — por eso http_build_query.
-            // Se mandan todas las opciones: al sintonizar se usa la primera que resuelva.
-            $lines[] = url('/api/juanita/stream').'?'.http_build_query(['u' => array_column($event['options'], 'url')]);
+            if (! $full) {
+                $title = $this->m3uField("{$event['home']} vs {$event['away']} ({$event['time']})");
+                $lines[] = "#EXTINF:-1 tvg-id=\"{$id}\" group-title=\"{$league}\",{$title}";
+                // ponytail: url() con array agrega path, no query — por eso http_build_query.
+                // Se mandan todas las opciones: al sintonizar se usa la primera que resuelva.
+                $lines[] = url('/api/juanita/stream').'?'.http_build_query(['u' => array_column($event['options'], 'url')]);
+                continue;
+            }
+            foreach ($event['options'] as $opt) {
+                $optId = "{$id}-".Str::slug($opt['source']);
+                $title = $this->m3uField("{$event['home']} vs {$event['away']} ({$event['time']}) — {$opt['source']}");
+                $lines[] = "#EXTINF:-1 tvg-id=\"{$optId}\" group-title=\"{$league}\",{$title}";
+                $lines[] = url('/api/juanita/stream').'?'.http_build_query(['u' => $opt['url']]);
+            }
         }
 
         return response(implode("\n", $lines)."\n", 200, [
@@ -66,20 +77,33 @@ class PelotaController extends Controller
 
     // ponytail: XMLTV mínimo desde la agenda (sin descripciones ni logos).
     // Duración fija 2h por partido; ids iguales a los tvg-id de la playlist.
-    public function epg(): Response
+    // ?full=1: un programme por opción (mismo horario).
+    public function epg(Request $request): Response
     {
+        $full = $request->boolean('full');
         $out = ['<?xml version="1.0" encoding="UTF-8"?>', '<tv>'];
         foreach ($this->juanita->getAgenda() as $event) {
             if (($event['options'] ?? []) === [] || ! is_string($event['time'] ?? null)) {
                 continue;
             }
             $id = Str::slug("{$event['home']} vs {$event['away']}");
-            $name = $this->xml("{$event['home']} vs {$event['away']}");
-            $out[] = "  <channel id=\"{$id}\"><display-name>{$name}</display-name></channel>";
             // ponytail: la hora ya viene en AR; se ancla a date_diary (o hoy) solo para el start.
             $date = $event['date'] ?? date('Y-m-d');
             $start = new \DateTimeImmutable("{$date} {$event['time']}", new \DateTimeZone('America/Argentina/Buenos_Aires'));
-            $out[] = "  <programme start=\"{$start->format('YmdHis O')}\" stop=\"{$start->modify('+2 hours')->format('YmdHis O')}\" channel=\"{$id}\"><title>{$name}</title></programme>";
+            $startFmt = $start->format('YmdHis O');
+            $stopFmt = $start->modify('+2 hours')->format('YmdHis O');
+            if (! $full) {
+                $name = $this->xml("{$event['home']} vs {$event['away']}");
+                $out[] = "  <channel id=\"{$id}\"><display-name>{$name}</display-name></channel>";
+                $out[] = "  <programme start=\"{$startFmt}\" stop=\"{$stopFmt}\" channel=\"{$id}\"><title>{$name}</title></programme>";
+                continue;
+            }
+            foreach ($event['options'] as $opt) {
+                $optId = "{$id}-".Str::slug($opt['source']);
+                $name = $this->xml("{$event['home']} vs {$event['away']} — {$opt['source']}");
+                $out[] = "  <channel id=\"{$optId}\"><display-name>{$name}</display-name></channel>";
+                $out[] = "  <programme start=\"{$startFmt}\" stop=\"{$stopFmt}\" channel=\"{$optId}\"><title>{$name}</title></programme>";
+            }
         }
         $out[] = '</tv>';
 
