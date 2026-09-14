@@ -14,7 +14,7 @@ export default function Player({ stream, onClose, videoRef }: PlayerProps) {
             role="dialog"
             aria-modal="true"
             aria-label={`Reproductor · ${stream.title}`}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4" /* ponytail: sin backdrop-blur — blur sobre video en smart TV */
             onClick={onClose}
         >
             <div className="w-full max-w-6xl" onClick={(e) => e.stopPropagation()}>

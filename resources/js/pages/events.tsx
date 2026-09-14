@@ -347,7 +347,14 @@ function EventCard({
                 {imageFailed ? (
                     <div className="flex h-full w-full items-center justify-center text-[var(--mute)]">▒▒ sin_imagen</div>
                 ) : (
-                    <img alt={event.name} className="h-full w-full object-cover opacity-80" src={event.image} onError={onImageError} />
+                    <img
+                        alt={event.name}
+                        className="h-full w-full object-cover opacity-80"
+                        src={event.image}
+                        onError={onImageError}
+                        loading="lazy"
+                        decoding="async"
+                    />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
                 <div className="absolute right-2 bottom-2 left-2">

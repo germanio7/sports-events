@@ -1,7 +1,6 @@
 import { Link, usePage } from '@inertiajs/react';
 import { type ReactNode } from 'react';
 
-import CrtOverlay from '@/components/crt-overlay';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 
 interface PublicLayoutProps {
@@ -23,12 +22,10 @@ export default function PublicLayout({ children, breadcrumbs, title }: PublicLay
 
     return (
         <div className="text-foreground relative flex min-h-screen flex-col overflow-x-hidden">
-            <CrtOverlay />
-
-            <nav className="sticky top-0 z-50 border-b border-[var(--line)] bg-[rgba(9,11,8,0.92)] backdrop-blur-md">
+            <nav className="sticky top-0 z-50 border-b border-[var(--line)] bg-[rgba(9,11,8,0.92)]">
+                {/* ponytail: sin backdrop-blur — cuesta un composite por scroll en smart TV */}
                 <div className="mx-auto flex h-[58px] max-w-[1080px] items-center justify-between gap-4 px-5 md:px-10">
                     <Link href="/" className="flex items-center gap-3 font-bold tracking-[3px] text-[var(--fg-hi)]">
-                        <span className="led" />
                         <span>
                             Eventos <b className="text-[var(--green)] drop-shadow-[0_0_12px_var(--green-glow)]">Deportivos</b>
                         </span>

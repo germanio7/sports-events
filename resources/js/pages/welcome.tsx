@@ -9,7 +9,7 @@ export default function Welcome() {
 
             <section className="flex flex-1 flex-col justify-center py-8">
                 <div className="mb-4 flex items-center gap-2 text-[11px] tracking-[4px] text-[var(--amber)] uppercase">
-                    <span className="led" /> agregador de streams deportivos
+                    agregador de streams deportivos
                 </div>
                 <h1 className="mb-4 text-6xl leading-[0.86] font-extrabold tracking-[-3px] text-[var(--fg-max)] md:text-8xl">
                     Eventos<span className="text-[var(--green)] [text-shadow:0_0_34px_var(--green-glow)]"> Deportivos</span>
