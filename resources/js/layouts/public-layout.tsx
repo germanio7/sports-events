@@ -14,6 +14,7 @@ const navItems: { href: string; label: string }[] = [
     { href: '/', label: 'Inicio' },
     { href: '/opcion-1', label: 'Opción 1' },
     { href: '/opcion-2', label: 'Opción 2' },
+    { href: '/opcion-3', label: 'Opción 3' },
 ];
 
 export default function PublicLayout({ children, breadcrumbs, title }: PublicLayoutProps) {

@@ -63,7 +63,7 @@ export default function Pelota() {
             setLoading(true);
             setError(null);
             try {
-                const response = await fetch('/api/pelota/agenda', { signal: controller.signal });
+                const response = await fetch('/api/juanita/agenda', { signal: controller.signal });
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const data: { source: string; events: PelotaEvent[] } = await response.json();
                 setEvents(data.events);
@@ -88,16 +88,16 @@ export default function Pelota() {
     const sorted = sortedByTime(events);
 
     return (
-        <PublicLayout title="Opción 2">
-            <Head title="Opción 2" />
+        <PublicLayout title="Opción 3">
+            <Head title="Opción 3" />
 
-            <Strip index="02" name="opcion" highlight="2" />
+            <Strip index="03" name="opcion" highlight="3" />
 
             <div className="tty-frame mb-10">
                 <div className="tty-head">
                     <span className="tty-prompt">$</span>
                     <span className="tty-cmd">agenda</span>
-                    <span className="tty-flag">--fuente futbollibrehd.me · hora AR (UTC-3)</span>
+                    <span className="tty-flag">--fuente pelisjuanita.com · hora AR (UTC-3)</span>
                     <span className="tty-pid">{events.length.toString().padStart(3, '0')} partidos</span>
                 </div>
                 <div className="tty-body">

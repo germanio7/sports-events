@@ -34,9 +34,14 @@ export default function Welcome() {
                     >
                         ▸ opción 2
                     </Link>
+                    <Link
+                        href="/opcion-3"
+                        className="btn-ghost inline-flex items-center gap-2 rounded px-6 py-3 text-[12px] font-bold tracking-[2px] uppercase"
+                    >
+                        ▸ opción 3
+                    </Link>
                 </div>
             </section>
         </PublicLayout>
     );
 }
-
