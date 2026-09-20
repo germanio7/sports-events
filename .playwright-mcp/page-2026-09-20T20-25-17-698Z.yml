@@ -1,0 +1,22 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - img "Ícono para pelisjuanita.com" [ref=e5]
+        - heading "pelisjuanita.com" [level=1] [ref=e6]
+      - heading "Verificación de seguridad en curso" [level=2] [ref=e7]
+      - paragraph [ref=e8]: Este sitio web utiliza un servicio de seguridad para protegerse contra bots maliciosos. Esta página se muestra mientras el sitio web verifica que tú no eres un bot.
+  - contentinfo [ref=e15]:
+    - generic [ref=e17]:
+      - generic [ref=e19]:
+        - text: "Ray ID:"
+        - code [ref=e20]: a3e38efbeead7a5c
+      - generic [ref=e21]:
+        - generic [ref=e22]:
+          - text: Rendimiento y seguridad de
+          - link "Cloudflare, se abre en una pestaña nueva" [ref=e23] [cursor=pointer]:
+            - /url: https://www.cloudflare.com?utm_source=challenge&utm_campaign=m
+            - text: Cloudflare
+        - link "Privacidad, se abre en una pestaña nueva" [ref=e25] [cursor=pointer]:
+          - /url: https://www.cloudflare.com/es-es/privacypolicy/
+          - text: Privacidad

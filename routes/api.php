@@ -13,3 +13,5 @@ Route::get('/juanita/agenda', [PelotaController::class, 'agendaJuanita'])->name(
 Route::get('/juanita/playlist.m3u', [PelotaController::class, 'playlist'])->name('api.juanita.playlist');
 Route::get('/juanita/stream', [PelotaController::class, 'stream'])->name('api.juanita.stream');
 Route::get('/juanita/epg.xml', [PelotaController::class, 'epg'])->name('api.juanita.epg');
+Route::get('/juanita/tv/playlist.m3u', [PelotaController::class, 'tvPlaylist'])->name('api.juanita.tv.playlist');
+Route::get('/juanita/tv/stream', [PelotaController::class, 'stream'])->name('api.juanita.tv.stream');

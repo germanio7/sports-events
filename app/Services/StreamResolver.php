@@ -122,6 +122,18 @@ class StreamResolver
             }
         }
 
+        // ponytail: pelisjuanita /tv usa f.html?get=<m3u8|b64> en vez de ?r=.
+        $get = $params['get'] ?? '';
+        if (is_string($get) && $get !== '') {
+            if (str_starts_with($get, 'http')) {
+                return $get;
+            }
+            $decoded = base64_decode($get, true);
+            if ($decoded !== false && str_starts_with($decoded, 'http')) {
+                return $decoded;
+            }
+        }
+
         return $url;
     }
 
@@ -152,6 +164,18 @@ class StreamResolver
         $parts = parse_url($base);
         $origin = ($parts['scheme'] ?? 'https').'://'.($parts['host'] ?? '');
 
-        return str_starts_with($src, '/') ? $origin.$src : $origin.'/'.ltrim($src, '/');
+        if (str_starts_with($src, '?') || str_starts_with($src, '#')) {
+            return ($parts['path'] ?? '/').$src;
+        }
+
+        if (str_starts_with($src, '/')) {
+            return $origin.$src;
+        }
+
+        // ponytail: relativo al directorio base (/tv/…), no al origin — si no, /tv/servers/x.php se vuelve /servers/x.php.
+        $path = $parts['path'] ?? '/';
+        $dir = str_ends_with($path, '/') ? $path : substr($path, 0, (int) strrpos($path, '/') + 1);
+
+        return $origin.$dir.ltrim($src, '/');
     }
 }

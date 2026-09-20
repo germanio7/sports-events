@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Services\PelotaLibreScraper;
 use App\Services\PelisJuanitaScraper;
+use App\Services\JuanitaTv;
 use App\Services\StreamResolver;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -15,7 +16,7 @@ use Illuminate\Support\Str;
 
 class PelotaController extends Controller
 {
-    public function __construct(private readonly PelotaLibreScraper $scraper, private readonly PelisJuanitaScraper $juanita, private readonly StreamResolver $resolver) {}
+    public function __construct(private readonly PelotaLibreScraper $scraper, private readonly PelisJuanitaScraper $juanita, private readonly JuanitaTv $tv, private readonly StreamResolver $resolver) {}
 
     public function agenda(): JsonResponse
     {
@@ -108,6 +109,33 @@ class PelotaController extends Controller
         $out[] = '</tv>';
 
         return response(implode("\n", $out)."\n", 200, ['Content-Type' => 'application/xml']);
+    }
+
+    // ponytail: grilla 24/7 de /tv (canales fijos, sin EPG: no hay horarios).
+    // Mismo patrón que playlist(): una entrada por canal (proxy, ?full=1 por servidor).
+    public function tvPlaylist(Request $request): Response
+    {
+        $full = $request->boolean('full');
+        $lines = ['#EXTM3U'];
+        foreach ($this->tv->getChannels() as $channel) {
+            $group = $this->m3uField($channel['category']);
+            $id = Str::slug($channel['name']);
+            if (! $full) {
+                $lines[] = "#EXTINF:-1 tvg-id=\"{$id}\" group-title=\"{$group}\",{$this->m3uField($channel['name'])}";
+                $lines[] = url('/api/juanita/tv/stream').'?'.http_build_query(['u' => array_column($channel['options'], 'url')]);
+                continue;
+            }
+            foreach ($channel['options'] as $opt) {
+                $optId = "{$id}-".Str::slug($opt['source']);
+                $lines[] = "#EXTINF:-1 tvg-id=\"{$optId}\" group-title=\"{$group}\",{$this->m3uField($channel['name'].' — '.$opt['source'])}";
+                $lines[] = url('/api/juanita/tv/stream').'?'.http_build_query(['u' => $opt['url']]);
+            }
+        }
+
+        return response(implode("\n", $lines)."\n", 200, [
+            'Content-Type' => 'audio/x-mpegurl',
+            'Content-Disposition' => 'inline; filename="juanita-tv.m3u"',
+        ]);
     }
 
     private function xml(string $value): string
