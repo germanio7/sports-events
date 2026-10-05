@@ -41,7 +41,7 @@ return [
     ],
 
     'pelotalibre' => [
-        'agenda_url' => env('PELOTALIBRE_AGENDA_URL', 'https://futbollibrehd.me/api/agenda'),
+        'agenda_url' => env('PELOTALIBRE_AGENDA_URL', 'https://pelotalibre.la/agenda.php'),
     ],
 
     'pelisjuanita' => [
